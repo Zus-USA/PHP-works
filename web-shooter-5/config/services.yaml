@@ -1,0 +1,25 @@
+parameters:
+    repository.storage.file: '%kernel.project_dir%/storage/app/tasks.json'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Exception/'
+            - '../src/Kernel.php'
+
+    # Менеджер репозиториев
+    App\Repository\TaskRepositoryManager:
+        arguments:
+            $storagePath: '%repository.storage.file%'
+            $connection: '@?doctrine.dbal.default_connection'
+
+    # Интерфейс репозитория через менеджер
+    App\Repository\TaskRepositoryInterface:
+        factory: ['@App\Repository\TaskRepositoryManager', 'getRepository']

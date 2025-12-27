@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Добавить{% endblock %}
+
+{% block body %}
+<div class="container">
+    <header class="header">
+        <h1 class="header__title">Добавить</h1>
+    </header>
+
+    <main class="main">
+        {% if errors is not empty %}
+            <div class="alert alert--error">
+                <span class="alert__icon">✗</span>
+                <div>
+                    {% for fieldErrors in errors %}
+                        {% for error in fieldErrors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{{ path('task_add') }}" class="form">
+            <div class="form__group">
+                <label for="title" class="form__label">
+                    Название
+                    <span class="form__required">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="title" 
+                    name="title" 
+                    class="form__input {% if errors.title is defined %}form__input--error{% endif %}"
+                    required 
+                    minlength="3"
+                    maxlength="255"
+                    placeholder=""
+                    value="{{ old.title|default('') }}"
+                    autofocus
+                >
+                {% if errors.title is defined %}
+                    <div class="form__error">
+                        {% for error in errors.title %}
+                            <div class="form__error-text">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="form__hint">3-255 символов</div>
+            </div>
+            
+            <div class="form__actions">
+                <button type="submit" class="btn btn--primary btn--large">Сохранить</button>
+                <a href="{{ path('task_list') }}" class="btn btn--secondary btn--large">Отмена</a>
+            </div>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <a href="{{ path('task_list') }}" class="footer__link">← Назад</a>
+    </footer>
+</div>
+{% endblock %}
