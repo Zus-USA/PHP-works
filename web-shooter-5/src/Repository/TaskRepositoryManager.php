@@ -23,7 +23,14 @@ class TaskRepositoryManager
     public function getRepository(): TaskRepositoryInterface
     {
         if ($this->repository === null) {
-            $this->repository = $this->createRepository();
+            try {
+                $this->repository = $this->createRepository();
+            } catch (\Throwable $e) {
+                // Если произошла ошибка при создании репозитория (например, проблема с подключением к БД),
+                // автоматически переключаемся на файловый репозиторий
+                error_log('Ошибка при создании репозитория, используется файловый репозиторий: ' . $e->getMessage());
+                $this->repository = new FileTaskRepository($this->storagePath);
+            }
         }
 
         return $this->repository;
@@ -45,14 +52,30 @@ class TaskRepositoryManager
 
     /**
      * Создать MySQL репозиторий
+     * Если подключение недоступно, автоматически переключается на файловый репозиторий
      */
-    private function createMySqlRepository(): MySqlTaskRepository
+    private function createMySqlRepository(): TaskRepositoryInterface
     {
         if ($this->connection === null) {
-            throw new \RuntimeException('Для MySQL репозитория требуется подключение к базе данных');
+            // Если подключение не предоставлено, используем файловый репозиторий
+            return new FileTaskRepository($this->storagePath);
         }
 
-        return new MySqlTaskRepository($this->connection);
+        try {
+            // Пытаемся проверить подключение, не вызывая connect() явно
+            // Если подключение не установлено, Doctrine попытается подключиться автоматически
+            // при первом запросе, но мы можем проверить это здесь
+            if (!$this->connection->isConnected()) {
+                // Пытаемся подключиться
+                $this->connection->connect();
+            }
+            return new MySqlTaskRepository($this->connection);
+        } catch (\Throwable $e) {
+            // Если подключение недоступно, используем файловый репозиторий как fallback
+            // Логируем ошибку для отладки, но не прерываем выполнение
+            error_log('Не удалось подключиться к базе данных, используется файловый репозиторий: ' . $e->getMessage());
+            return new FileTaskRepository($this->storagePath);
+        }
     }
 
     /**

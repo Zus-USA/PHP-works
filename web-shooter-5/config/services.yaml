@@ -18,6 +18,7 @@ services:
     App\Repository\TaskRepositoryManager:
         arguments:
             $storagePath: '%repository.storage.file%'
+            # Подключение к БД опционально - если оно недоступно, будет использован файловый репозиторий
             $connection: '@?doctrine.dbal.default_connection'
 
     # Интерфейс репозитория через менеджер
