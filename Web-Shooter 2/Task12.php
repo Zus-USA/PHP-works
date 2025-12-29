@@ -1,8 +1,11 @@
 <?php
 
 class StringUtils {
+    // Статический метод для проверки строки на палиндром
     public static function isPalindrome(string $s): bool {
+        // Приводим строку к нижнему регистру и удаляем пробелы
         $s = mb_strtolower(preg_replace('/\s+/', '', $s));
+        // Сравниваем строку с её перевернутой версией
         return $s === strrev($s);
     }
 }

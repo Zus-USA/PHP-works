@@ -1,9 +1,11 @@
 <?php
 
+// Интерфейс для оплаты
 interface Payable {
-    public function pay(float $amount): bool;
+    public function pay(float $amount): bool; // Метод оплаты
 }
 
+// Класс для оплаты наличными
 class CashPayment implements Payable 
 {
     public function pay($amount): bool
@@ -12,6 +14,8 @@ class CashPayment implements Payable
         return true;
     }
 }
+
+// Класс для оплаты криптовалютой
 class CryptoPayment implements Payable 
 {
     public function pay($amount): bool
@@ -21,10 +25,13 @@ class CryptoPayment implements Payable
     }
 }
 
+// Создаем объекты для разных типов оплаты
 $cash = new CashPayment();
-$crypyocash = new CryptoPayment();
+$crypyocash = new CryptoPayment(); 
 
+// Выполняем оплату разными способами
 $cash->pay(1012);
 $crypyocash->pay(18);
 
 ?>
+
