@@ -8,7 +8,7 @@ class Product
 {
     // Приватные свойства товара
     private string $name;   // Название товара
-    private float $price;   // Цена товара (тип: число с плавающей точкой)
+    private float $price;   // Цена товара
 
     // Конструктор класса Product
     public function __construct(string $name, float $price)
@@ -29,7 +29,7 @@ class Product
         return $this->name;
     }
 
-    // Геттер для получения цены товара
+    // Геттер для получения цены товара (св-ва приватные)
     public function getPrice(): float
     {
         return $this->price;

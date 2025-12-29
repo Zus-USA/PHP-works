@@ -1,6 +1,13 @@
 <?php
 
-// Подключение файлов вручную (без автозагрузчика)
+// Один раз подключаем автозагрузчик
+//require_once 'vendor/autoload.php';
+
+// Все классы автоматически доступны
+//$user = new App\Models\User();
+//$product = new App\Models\Product();
+
+// Подключение файлов вручную
 require_once __DIR__ . '/src/Models/User.php';
 require_once __DIR__ . '/src/Models/Product.php';
 require_once __DIR__ . '/src/Models/Order.php';
@@ -11,7 +18,7 @@ use App\Models\Product;
 use App\Models\Order;
 
 // Создание объекта пользователя
-$user = new User("Алексей Смирнов", "alexey@example.com");
+$user = new User("Алексей Смирнов", "alexey@example.com,\n");
 echo $user->getInfo();  // Вывод информации о пользователе
 
 // Создание объектов продуктов

@@ -7,7 +7,7 @@ namespace App\Models;
 class Order
 {
     // Приватные свойства заказа
-    private int $orderId;      // ID заказа (тип: целое число)
+    private int $orderId;      // ID заказа
     private User $user;        // Объект пользователя (тип: User)
     private array $products = []; // Массив товаров в заказе
 
@@ -20,8 +20,6 @@ class Order
     }
 
     // Метод добавления товара в заказ
-    // Принимает объект Product в качестве параметра
-    // Тип возвращаемого значения: void (ничего не возвращает)
     public function addProduct(Product $product): void
     {
         // Добавление товара в конец массива продуктов
@@ -29,7 +27,6 @@ class Order
     }
 
     // Метод для получения информации о заказе
-    // Формирует подробное описание заказа
     public function getInfo(): string
     {
         // Начало формирования строки с информацией
@@ -42,7 +39,7 @@ class Order
             $info .= " - {$product->getName()} ({$product->getPrice()} руб.)\n";
         }
         
-        return $info; // Возврат сформированной строки
+        return $info;
     }
 
     // Метод для расчёта общей суммы заказа
@@ -55,6 +52,6 @@ class Order
             $total += $product->getPrice(); // Добавление цены товара к общей сумме
         }
         
-        return $total; // Возврат общей суммы
+        return $total; 
     }
 }

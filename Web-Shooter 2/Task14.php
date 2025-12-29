@@ -1,20 +1,19 @@
 <?php
 
-// Класс Product (Товар)
+// Класс Product
 class Product {
     public $name;    // Название товара
     public $price;   // Цена товара
     
-    // Конструктор класса - вызывается при создании объекта
     public function __construct($name, $price) {
         $this->name = $name;     // Инициализация названия
         $this->price = $price;   // Инициализация цены
     }
 }
 
-// Класс Cart (Корзина покупок)
+// Класс Cart
 class Cart {
-    private $items = array();  // Массив для хранения товаров (инкапсуляция)
+    private $items = array();  // Массив для хранения товаров
     
     // Метод добавления товара в корзину
     public function add($p) {
@@ -30,7 +29,7 @@ class Cart {
         foreach ($this->items as $item) {
             $total += $item->price;  // Суммирование цен
         }
-        return $total;  // Возврат общей суммы
+        return $total;
     }
     
     // Метод отображения содержимого корзины
